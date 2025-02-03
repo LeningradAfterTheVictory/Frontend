@@ -1,12 +1,10 @@
-name: CI/CD for Frontend
+name: CI/CD
 
 on:
   push:
     branches:
       - main
   pull_request:
-    branches:
-      - main
 
 jobs:
   build:
@@ -20,19 +18,15 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 22.8.0
-          cache: 'npm'
 
       - name: Install dependencies
-        run: |
-          cd leningrad # Переход в папку проекта
-          npm ci # Устанавливаем зависимости из package-lock.json
+        working-directory: leningrad
+        run: npm install
 
       - name: Build project
-        run: |
-          cd leningrad
-          npm run build # Убедитесь, что скрипт build прописан в package.json
+        working-directory: leningrad
+        run: npm run build
 
       - name: Run tests
-        run: |
-          cd leningrad
-          npm test # Убедитесь, что есть тестовый скрипт в package.json
+        working-directory: leningrad
+        run: npm test
