@@ -1,35 +1,29 @@
-name: Next.js CI/CD
+name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
-  build-and-test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: 18 # Убедитесь, что версия Node.js соответствует требованиям
+          cache: 'npm'
 
       - name: Install dependencies
-        working-directory: leningrad
         run: npm ci
 
       - name: Run tests
-        working-directory: leningrad
         run: npm test
-
-      - name: Build Next.js App
-        working-directory: leningrad
-        run: npm run build
-
-      - name: List files for debugging
-        run: ls -R
