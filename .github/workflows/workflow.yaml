@@ -1,0 +1,23 @@
+deploy:
+  runs-on: ubuntu-latest
+  needs: build
+  steps:
+    - name: Checkout репозитория
+      uses: actions/checkout@v4
+
+    - name: Установка Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - name: Установка зависимостей
+      run: npm install
+
+    - name: Сборка проекта
+      run: npm run build && npm run export
+
+    - name: Деплой в GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./out
