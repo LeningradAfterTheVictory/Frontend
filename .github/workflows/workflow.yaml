@@ -15,9 +15,3 @@ deploy:
 
     - name: Сборка проекта
       run: npm run build && npm run export
-
-    - name: Деплой в GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./out
