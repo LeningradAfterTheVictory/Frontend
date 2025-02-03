@@ -1,4 +1,4 @@
-name: CI
+name: CI/CD for Frontend
 
 on:
   push:
@@ -19,11 +19,20 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 19 # Убедитесь, что версия Node.js соответствует требованиям
+          node-version: 19 # Укажите версию Node.js, используемую в проекте
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        run: |
+          cd leningrad # Переход в папку проекта
+          npm ci # Устанавливаем зависимости из package-lock.json
+
+      - name: Build project
+        run: |
+          cd leningrad
+          npm run build # Убедитесь, что скрипт build прописан в package.json
 
       - name: Run tests
-        run: npm test
+        run: |
+          cd leningrad
+          npm test # Убедитесь, что есть тестовый скрипт в package.json
