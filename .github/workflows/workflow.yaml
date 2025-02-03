@@ -19,7 +19,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 19 # Укажите версию Node.js, используемую в проекте
+          node-version: 22.8.0
           cache: 'npm'
 
       - name: Install dependencies
