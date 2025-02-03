@@ -20,10 +20,13 @@ jobs:
           node-version: '16'
 
       - name: Install dependencies
+        working-directory: Frontend/leningrad
         run: npm ci
 
       - name: Run tests
+        working-directory: Frontend/leningrad
         run: npm test
 
       - name: Build Next.js App
+        working-directory: Frontend/leningrad
         run: npm run build
