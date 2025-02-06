@@ -18,7 +18,7 @@ main {
 }
 
 .text {
-  font-size: 25px;
+  font-size: clamp(16px, 4vw, 25px);
   color: rgba(112, 111, 109, 1);
   font-family: 'Geologica', sans-serif;
 }
@@ -72,7 +72,7 @@ main {
 }
 
 .input-group label {
-  font-size: 25px;
+  font-size: clamp(16px, 4vw, 25px);
   color: #0D74BD;
   text-align: left;
   margin-left: 20px;
@@ -84,7 +84,7 @@ main {
   border: 2px solid #0D74BD;
   border-radius: 40px;
   width: 100%;
-  font-size: 18px;
+  font-size: clamp(16px, 4vw, 18px);
   text-align: left;
   padding-left: 15px;
   box-sizing: border-box;
@@ -100,7 +100,7 @@ main {
 
 .form-links a {
   color: #0D74BD;
-  font-size: 25px;
+  font-size: clamp(16px, 4vw, 25px);
   font-family: 'Geologica', sans-serif;
   text-decoration: underline;
   margin-bottom: 5px;
@@ -127,9 +127,8 @@ main {
     padding: 8px;
   }
   .form-links a {
-    font-size: 16px;
+    font-size: 16px; 
   }
-
   .form-1 {
     height: 500px;
   }
