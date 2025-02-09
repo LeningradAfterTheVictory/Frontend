@@ -1,0 +1,20 @@
+/* Глобальные стили приложения */
+.appContainer {
+  min-width: 1000px;
+  }
+  
+  .customLinkListContainer {
+    display: flex;
+    min-width: 500px;
+    max-width: 500px;
+  }
+  
+  /* Уникальные стили для элементов */
+  .telegramLink {
+    color: #0088cc;
+  }
+  
+  .vkLink {
+    color: #4c75a3;
+  }
+  

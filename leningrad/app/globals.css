@@ -3,8 +3,6 @@
 @tailwind utilities;
 @import url('https://fonts.googleapis.com/css2?family=Geologica:wght@400;700&display=swap');
 
-
-
 body {
   margin: 0;
   font-family: 'Geologica', sans-serif;
@@ -17,7 +15,7 @@ body {
   width: 100%;
   background-color: rgba(255, 255, 255, 0.1);
   display: flex;
-  justify-content: flex-end; /* Выравнивание навигации вправо */
+  justify-content: flex-end;
   align-items: center;
   padding: 10px 20px;
   z-index: 1000;
@@ -26,8 +24,8 @@ body {
 
 .nav-bar {
   display: flex;
-  gap: 30px; /* Увеличено расстояние между элементами */
-  align-items: center; /* Центровка элементов внутри */
+  gap: 30px;
+  align-items: center;
 }
 
 .nav-link {
@@ -40,6 +38,73 @@ body {
 
 .nav-link.active {
   color: #0D74BD;
+}
+
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100vh;
+  padding: 0 5%;
+  background: linear-gradient(to right, #E9E7E1 50%, transparent 70%);
+}
+
+.hero-content {
+  position: absolute;
+  top: 20%;
+  left: 10%;
+  z-index: 2;
+  max-width: 40%;
+  color: black;
+}
+
+.hero-content h1 {
+  font-style: normal;
+  font-weight: 400;
+  line-height: 100px;
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.big-text {
+  font-size: 120px;
+  display: block;
+}
+
+.small-text {
+  font-size: 60px;
+  display: block;
+}
+
+
+.hero-image {
+  position: absolute;
+  top: 0;
+  right: 0; /* Сдвигаем изображение вправо */
+  height: 100vh; /* Высота на весь экран */
+  width: auto; /* Сохраняем пропорции */
+  max-width: 100%; /* Ограничиваем ширину */
+  z-index: 1;
+}
+
+.hero-image img {
+  height: 100vh;
+  width: auto;
+  object-fit: cover;
+  object-position: center center; /* Смещаем изображение к правому краю */
+
+  mask-image: 
+    radial-gradient(ellipse 100% 80% at 30% 50%, rgb(208, 198, 167, 1) 50%, rgba(208, 198, 167, 0) 80%),
+    radial-gradient(ellipse 80% 80% at 65% 40%, rgba(208, 198, 167, 1) 50%, rgba(208, 198, 167, 0) 80%);
+  mask-composite: intersect; /* или add */
+  -webkit-mask-image: 
+    radial-gradient(ellipse 100% 80% at 30% 50%, rgba(208, 198, 167, 1) 50%, rgba(208, 198, 167, 0) 80%),
+    radial-gradient(ellipse 80% 80% at 65% 40%, rgba(208, 198, 167, 1) 50%, rgba(208, 198, 167, 0) 80%);
+  -webkit-mask-composite: intersect; /* или add */
+
 }
 
 .nav-bar img {
@@ -78,33 +143,6 @@ body {
   flex-shrink: 0;
   padding: 20px;
   text-align: center;
-}
-
-.hero-image {
-  position: absolute;
-  top: 0;
-  right: 0; /* Сдвигаем изображение вправо */
-  height: 100vh; /* Высота на весь экран */
-  width: auto; /* Сохраняем пропорции */
-  max-width: 100%; /* Ограничиваем ширину */
-  z-index: 1;
-}
-
-.hero-image img {
-  height: 100vh;
-  width: auto;
-  object-fit: cover;
-  object-position: right; /* Смещаем изображение к правому краю */
-
-  mask-image: 
-    radial-gradient(ellipse 100% 80% at 30% 50%, rgb(208, 198, 167, 1) 50%, rgba(208, 198, 167, 0) 80%),
-    radial-gradient(ellipse 80% 80% at 65% 40%, rgba(208, 198, 167, 1) 50%, rgba(208, 198, 167, 0) 80%);
-  mask-composite: intersect; /* или add */
-  -webkit-mask-image: 
-    radial-gradient(ellipse 100% 80% at 30% 50%, rgba(208, 198, 167, 1) 50%, rgba(208, 198, 167, 0) 80%),
-    radial-gradient(ellipse 80% 80% at 65% 40%, rgba(208, 198, 167, 1) 50%, rgba(208, 198, 167, 0) 80%);
-  -webkit-mask-composite: intersect; /* или add */
-
 }
 
 .hero::before {
@@ -146,17 +184,6 @@ body {
   display: flex;  
   flex-direction: column; 
   align-items: flex-end;
-}
-
-.big-text {
-  font-size: 120px;
-  display: block; 
-}
-
-.small-text {
-  font-size: 60px;
-  display: block; 
-  
 }
 
 .hero-content p {
@@ -221,9 +248,6 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Лёгкая тень */
 }
 
-
-
-
 .scroll-down {
   position: absolute;
   bottom: 20px;
@@ -278,6 +302,72 @@ body {
 
 
 
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+  
+  .hero {
+    flex-direction: column;
+    text-align: center;
+    height: 100vh;
+    padding: 10px;
+  }
+
+  .hero-content {
+    position: static;
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .big-text {
+    font-size: 3rem;
+    margin-top: 50%;
+    margin-right: 5rem;
+    display: block;
+  }
+
+  .small-text {
+    font-size: 1.5rem;
+    line-height: 0.2;
+    margin-right: 5rem;
+    display: block;
+  }
+
+  .hero-content p {
+    font-size: 1rem;
+  }
+
+  .bottom-left-text {
+    position: absolute;
+    left: 10%; /* Отступ слева */
+    top: 80%;
+    color: #665F5F;
+    max-width: 20rem;
+    text-align: justify
+  }
+
+  .hero-image img {
+    width: 130%; /* Увеличиваем изображение, чтобы можно было обрезать */
+    height: 100vh;
+    object-position: center; /* Центрируем изображение */
+  
+  
+    mask-image: 
+      radial-gradient(ellipse 100% 80% at 30% 50%, rgb(208, 198, 167, 1) 50%, rgba(208, 198, 167, 0) 80%),
+      radial-gradient(ellipse 80% 50% at 65% 40%, rgba(208, 198, 167, 1) 50%, rgba(208, 198, 167, 0) 80%);
+    mask-composite: intersect; /* или add */
+    -webkit-mask-image: 
+      radial-gradient(ellipse 100% 80% at 30% 50%, rgba(208, 198, 167, 1) 50%, rgba(208, 198, 167, 0) 80%),
+      radial-gradient(ellipse 80% 50% at 65% 40%, rgba(208, 198, 167, 1) 50%, rgba(208, 198, 167, 0) 80%);
+    -webkit-mask-composite: intersect; /* или add */
+  
+  }
+}
+
+
+
+
+
 .about {
   position: relative;
   overflow: hidden;
@@ -299,4 +389,159 @@ body {
   background: linear-gradient(to bottom, rgba(255, 254, 250, 0.1), rgba(255, 255, 255, 1), rgba(255, 254, 250, 0.1));
   pointer-events: none;
   z-index: -1;
+}
+
+.page-container {
+  scroll-snap-type: y mandatory; /* Принудительное прилипание */
+  overflow-y: scroll; /* Включаем скроллинг */
+  height: 100vh;
+  scroll-behavior: smooth; /* Плавная прокрутка */
+  transition: scroll-behavior 1.2s ease-in-out;
+}
+
+.section {
+  scroll-snap-align: start; /* Фиксируем каждую секцию */
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.about-content {
+  padding: 40px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.about-title {
+  font-size: 40px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.about-list {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 30px;
+}
+
+.about-list li {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  text-align: justify;
+}
+
+.checkbox {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #0D74BD;
+  border-radius: 4px;
+  background-color: white; /* Белый фон */
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+.about-stats {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+}
+
+.stat-box {
+  border: 2px solid #0D74BD; /* Синяя обводка */
+  border-radius: 30px;
+  padding: 10px;
+  background-color: white; /* Белый фон */
+  text-align: center; /* Выравнивание текста и заголовков по центру */
+  flex: 1;
+}
+
+.stat-box h3 {
+  font-size: 60px;
+  font-weight: bold;
+  margin-bottom: 1px;
+  color: #0D74BD; /* Синий цвет заголовков */
+  line-height: 1;
+}
+
+.stat-box p {
+  font-size: 25px;
+  margin-bottom: 1px;
+  color: #0D74BD; /* Синий цвет текста */
+  text-align: center; /* Выравнивание текста в плашках по центру */
+}
+
+.about-list p {
+  text-align: left; /* Выравнивание текста описания слева */
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .about-content {
+    padding: 20px;
+    max-width: 100%; /* Растягиваем на всю ширину */
+  }
+
+  .about-title {
+    font-size: 15px; /* Уменьшаем размер заголовка */
+    margin-bottom: 15px;
+    text-align: center; /* Центрируем текст заголовка */
+  }
+
+  .about-list {
+    margin-bottom: 20px; /* Уменьшаем отступ */
+  }
+
+  .about-list li {
+    flex-direction: flex; /* Располагаем элементы в столбик */
+    align-items: flex-start; /* Выравниваем текст слева */
+    margin-bottom: 15px; /* Уменьшаем отступ между пунктами */
+    font-size: 14px;
+  }
+
+  .checkbox {
+    width: 15px; /* Уменьшаем размер чекбокса */
+    height: 15px;
+    margin-right: 10px;
+  }
+
+  .about-stats {
+    gap: 15px; /* Уменьшаем промежутки между элементами */
+    justify-content: center; /* Центрируем содержимое */
+    align-items: center; /* Выравниваем элементы по центру */
+  }
+
+  .stat-box {
+    width: 100%; /* Увеличиваем ширину карточек */
+    max-width: 100px; /* Ограничиваем максимальную ширину */
+    padding: 15px;
+  }
+
+  .stat-box h3 {
+    font-size: 25px; /* Уменьшаем размер текста */
+  }
+
+  .stat-box p {
+    font-size: 12px; /* Уменьшаем размер текста описания */
+  }
 }
