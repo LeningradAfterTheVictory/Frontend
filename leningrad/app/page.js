@@ -10,12 +10,12 @@ const HomePage = () => {
     {
       href: "https://telegram.org",
       text: "@cracycot on Telegram",
-      icon: "✈️",
+      icon: "/images/log_tg.png",
     },
     {
       href: "https://vk.com",
       text: "@cracycot on VK",
-      icon: "📘",
+      icon: "/images/log_vk.png",
     },
   ];
 

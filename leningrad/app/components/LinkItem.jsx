@@ -12,7 +12,7 @@ const LinkItem = ({ link }) => {
         rel={newTab ? "noopener noreferrer" : ""}
         className={styles.link}
       >
-        {icon && <span className={styles.icon}>{icon}</span>} {/* Отображаем иконку, если она есть */}
+        <img src={icon} alt="иконки не будет" className={styles.icon} />
         {text}
       </a>
     </div>
