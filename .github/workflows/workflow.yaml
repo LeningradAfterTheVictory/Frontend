@@ -1,17 +1,32 @@
-deploy:
-  runs-on: ubuntu-latest
-  needs: build
-  steps:
-    - name: Checkout репозитория
-      uses: actions/checkout@v4
+name: CI/CD
 
-    - name: Установка Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: 18
+on:
+  push:
+    branches:
+      - main
+  pull_request:
 
-    - name: Установка зависимостей
-      run: npm install
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-    - name: Сборка проекта
-      run: npm run build && npm run export
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22.8.0
+
+      - name: Install dependencies
+        working-directory: leningrad
+        run: npm install
+
+      - name: Build project
+        working-directory: leningrad
+        run: npm run build
+
+#      - name: Run tests
+#        working-directory: leningrad
+#        run: npm test
