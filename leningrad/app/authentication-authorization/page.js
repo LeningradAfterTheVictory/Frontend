@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from "react";
+import { instance } from "./api.config.js";
 import './authentication-authorization-style.css';
 
 const AuthenticationAuthorizationPage = () => {
