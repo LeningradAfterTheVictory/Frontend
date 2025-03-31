@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import styles from "../routes/routes.module.css";
+import { useRouter } from "next/navigation";
 
 const API_URL = "http://194.87.252.234:6060/api/routes/get-all";
 
@@ -61,7 +62,7 @@ const routes = [
 // Компонент для карточки маршрута
 const RouteCard = ({ route }) => {
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(false);
-
+  const router = useRouter();
   // Обработчики для свайпов
   const handleTouchStart = (e) => {
     const touchStartX = e.touches[0].clientX;
@@ -84,12 +85,12 @@ const RouteCard = ({ route }) => {
       document.removeEventListener("touchend", handleTouchEnd);
     };
 
-    document.addEventListener("touchmove", handleTouchMove);
-    document.addEventListener("touchend", handleTouchEnd);
   };
+
 
   const handleLeftArrowClick = () => setIsDescriptionOpen(false);
   const handleRightArrowClick = () => setIsDescriptionOpen(true);
+
 
   return (
     <div className={styles.routeCard} onTouchStart={handleTouchStart}>
@@ -145,7 +146,12 @@ const App = () => {
   useEffect(() => {
     const fetchRoutes = async () => {
       try {
-        const response = await fetch(API_URL);
+
+        const response = await fetch(API_URL, {
+          credentials: "include",
+          mode: "cors",
+        });
+
         if (!response.ok) {
           throw new Error(`Ошибка запроса: ${response.status}`);
         }
@@ -171,9 +177,8 @@ const App = () => {
         {categories.map((category) => (
           <button
             key={category}
-            className={`${styles.categoryButton} ${
-              selectedCategory === category ? styles.active : ""
-            }`}
+            className={`${styles.categoryButton} ${selectedCategory === category ? styles.active : ""
+              }`}
             onClick={() => setSelectedCategory(category)}
           >
             {category}

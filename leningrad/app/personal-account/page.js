@@ -1,12 +1,100 @@
 'use client'
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+
 import './personal-account-style.css';
 
+const API_URL = "http://194.87.252.234:6060/api/attractions/get-all";
+
 const PersonalAccountPage = () => {
-    let attractionsFav = [];
-    let attractionsVis = [];
     const [isFavMode, setIsFavMode] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
+    const [attractionsFav, setAttractionsFav] = useState([]); // Состояние для избранных
+    const [attractionsVis, setAttractionsVis] = useState([]); // Состояние для посещенных
+    const [userName, setUserName] = useState("");  // Состояние для логина
+    const [userEmail, setUserEmail] = useState(""); 
+    const [loading, setLoading] = useState(true);
+    const router = useRouter();
+    const [imageSrc, setImageSrc] = useState("");
+
+    const handleAuth = async () => {
+        try {
+            const response = await fetch('http://194.87.252.234:6060/api/user/getUser', {
+                method: "GET",
+                credentials: "include", 
+            });
+
+            if (response.status === 200) {
+                const data = await response.json();
+                setUserName(data.name); // Сохраняем логин
+                setUserEmail(data.mail);
+                setLoading(false); 
+            } else if (response.status === 422 || response.status === 500) {
+                setTimeout(() => {
+                    const currentUrl = window.location.pathname;
+                    router.push(`/authentication-authorization?redirect=${encodeURIComponent(currentUrl)}`);
+                }, 2000);
+            } else {
+                console.error(`Ошибка авторизации: ${response.status}`);
+            }
+        } catch (error) {
+            console.error("Ошибка при проверке авторизации:", error);
+        }
+    };
+
+    const LogOut = async () => {
+        try {
+            const response = await fetch('http://194.87.252.234:6060/api/authentication/logout', {
+                method: "POST", 
+                credentials: "include",
+            });
+    
+            if (response.ok) {
+                setLoading(true)
+                setTimeout(() => {
+                    const currentUrl = window.location.pathname;
+                    router.push(`/authentication-authorization?redirect=${encodeURIComponent(currentUrl)}`);
+                }, 2000);
+            } else {
+                console.error("Ошибка при выходе:", response.status);
+            }
+        } catch (error) {
+            console.error("Ошибка запроса при выходе:", error);
+        }
+    };
+    
+    useEffect(() => {
+        handleAuth(); // Проверяем токен на сервере
+
+        const fetchDestinations = async () => {
+            try {
+                const response = await fetch(API_URL);
+                if (!response.ok) {
+                    throw new Error(`Ошибка запроса: ${response.status}`);
+                }
+                const data = await response.json();
+                setAttractionsVis(data);  // Сохраняем данные в состоянии
+                setAttractionsFav(data);  // Сохраняем данные в состоянии
+            } catch (error) {
+                console.error("Ошибка загрузки данных:", error);
+            }
+        };
+
+        fetchDestinations();
+
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth <= 768);
+        };
+
+        checkMobile();
+        window.addEventListener("resize", checkMobile);
+        return () => window.removeEventListener("resize", checkMobile);
+    }, []);
+
+    if (loading) {
+        return <div className="download">Загрузка...</div>;
+    }
 
     const BackgroundTransition = () => (
         <div className="background-transition" />
@@ -18,15 +106,15 @@ const PersonalAccountPage = () => {
 
     const Profile = () => (
         <div className="profile">
-            <img src="icon.png" className="profile-icon"></img>
+            <img src="personal-account/icon.svg" className="profile-icon"></img>
             <div>
                 <div className="data-type">
                     <div>Логин</div>
-                    <div className="data">Shurochic</div>
+                    <div className="data">{userName}</div>
                 </div>
                 <div className="data-type">
                     <div>Почта</div>
-                    <div className="data">Shurochic@yandex.ru</div>
+                    <div className="data">{userEmail}</div>
                 </div>
             </div>
         </div>
@@ -34,17 +122,17 @@ const PersonalAccountPage = () => {
 
     const MobileProfile = () => (
         <div className="profile">
-            <img src="icon.png" className="profile-icon"></img>
+            <img src="personal-account/icon.svg" className="profile-icon"></img>
             <div>
                 <div className="data-type">
                     <div>Логин</div>
-                    <div className="data">Shurochic</div>
+                    <div className="data">{userName}</div>
                 </div>
                 <div className="data-type">
                     <div>Почта</div>
-                    <div className="data">Shurochic@yandex.ru</div>
+                    <div className="data">{userEmail}</div>
                 </div>
-                <a href="../authentication-authorization/index2.html" className="exit-button">Выйти</a>
+                <button onClick={LogOut} className="exit-button">Выйти</button>
             </div>
         </div>
     );
@@ -70,7 +158,6 @@ const PersonalAccountPage = () => {
         </span>
     );
 
-
     const VisScrollMenu = () => (
         <div className="scrollmenu-vis">
             {
@@ -87,109 +174,57 @@ const PersonalAccountPage = () => {
         </div>
     );
 
-    const VisLaptopButtons = () => (
+    const VisLaptopButtons = ({ isFavMode }) => (
         <div className="action-buttons">
             <div className="switch-button switch" onClick={() => setIsFavMode(true)}>Избранное</div>
             <div className="selected-button">Посещенное</div>
-            <a href="../authentication-authorization/index2.html" className="exit-button switch">Выйти</a>
+            <button onClick={LogOut} className="exit-button switch">Выйти</button>
         </div>
     );
 
-    const FavLaptopButtons = () => (
+    const FavLaptopButtons = ({ isFavMode }) => (
         <div className="action-buttons">
             <div className="selected-button">Избранное</div>
             <div className="switch-button switch" onClick={() => setIsFavMode(false)}>Посещенное</div>
-            <a href="../authentication-authorization/index2.html" className="exit-button switch">Выйти</a>
+            <button onClick={LogOut} className="exit-button switch">Выйти</button>
         </div>
     );
 
-    const VisMobileButtons = () => (
+    const VisMobileButtons = ({ isFavMode }) => (
         <div className="action-buttons">
             <div className="switch-button switch" onClick={() => setIsFavMode(true)}>Избранное</div>
             <div className="selected-button">Посещенное</div>
         </div>
     );
 
-    const FavMobileButtons = () => (
+    const FavMobileButtons = ({ isFavMode }) => (
         <div className="action-buttons">
             <div className="selected-button">Избранное</div>
             <div className="switch-button switch" onClick={() => setIsFavMode(false)}>Посещенное</div>
         </div>
     );
 
-    function renderFavLaptop() {
-        return (
-            <>
-                <BackgroundTransition />
-                <Profile />
-                <RoutesHeader />
-                <FavLaptopButtons />
-                <FavScrollMenu />
-            </>
-        );
-    }
+    const LaptopView = ({ isFavMode }) => (
+        <>
+            <BackgroundTransition />
+            <Profile />
+            <RoutesHeader />
+            {isFavMode ? <FavLaptopButtons isFavMode={isFavMode} /> : <VisLaptopButtons isFavMode={isFavMode} />}
+            {isFavMode ? <FavScrollMenu /> : <VisScrollMenu />}
+        </>
+    );
 
-    function renderVisLaptop() {
-        return (
-            <>
-                <BackgroundTransition />
-                <Profile />
-                <VisLaptopButtons />
-                <VisScrollMenu />
-            </>
-        );
-    }
+    const MobileView = ({ isFavMode }) => (
+        <>
+            <BackgroundTransition />
+            <MobileProfile />
+            {isFavMode ? <FavMobileButtons isFavMode={isFavMode} /> : <VisMobileButtons isFavMode={isFavMode} />}
+            {isFavMode ? <FavScrollMenu /> : <VisScrollMenu />}
+        </>
+    );
 
-    function renderFavMobile() {
-        return (
-            <>
-                <BackgroundTransition />
-                <MobileProfile />
-                <FavMobileButtons />
-                <FavScrollMenu />
-            </>
-        );
-    }
+    return (isMobile ? (<MobileView isFavMode={isFavMode} />) : (<LaptopView isFavMode={isFavMode} />));
 
-    function renderVisMobile() {
-        return (
-            <>
-                <BackgroundTransition />
-                <MobileProfile />
-                <VisMobileButtons />
-                <VisScrollMenu />
-            </>
-        );
-    }
-
-    function renderFav() {
-        if (window.screen.width > 750) {
-            return renderFavLaptop();
-        } else {
-            return renderFavMobile();
-        }
-    }
-
-    function renderVis() {
-        if (window.screen.width > 750) {
-            return renderVisLaptop();
-        } else {
-            return renderVisMobile();
-        }
-    }
-
-    async function getData() {
-        try {
-            const requestURL = "http://194.87.252.234:8080/api/attractions/get-all";
-            const requestVis = new Request(requestURL);
-            const responseVis = await fetch(requestVis);
-            attractionsVis = await responseVis.json();
-            const responseFav = await fetch(requestVis);
-            attractionsFav = await responseFav.json();
-        } catch (error) {
-            console.log('error >> ', error.message);
-        }
-    }
 }
 
 export default PersonalAccountPage;
